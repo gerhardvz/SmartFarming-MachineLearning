@@ -1,0 +1,4 @@
+lmdb/*
+backup/
+*.out
+*.jpg
