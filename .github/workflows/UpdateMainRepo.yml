@@ -23,6 +23,7 @@ jobs:
       - name: Cloning Main Git Branch
         run: |-
             git clone https://github.com/gerhardvz/SmartFarming.git/
+            cd ./SmartFarming
             git submodule update --recursive
             git add *
             git commit -m "Updating Submodule Branches"
