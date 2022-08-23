@@ -36,6 +36,7 @@ jobs:
             
       - name: Commiting and Pushing to Master Branch
         run: |-
+            cd ./SmartFarming
             git add *
             git commit -m "Updating Submodule Branches"
             git push
