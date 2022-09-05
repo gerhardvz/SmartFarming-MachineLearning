@@ -1,13 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# Packages that need to be loaded
-
-# In[1]:
-
 
 import os, sys
-import tensorflow as tf
+# import tensorflow as tf
 import torch
 import torch.nn as nn  
 import torchvision.transforms as transforms   # for transforming images into tensors 
@@ -15,9 +8,7 @@ from torchvision.datasets import ImageFolder  # for working with classes and ima
 from PIL import Image
 
 
-# The below is needed to make the model get loaded withouth the resnet error
-
-# In[2]:
+# The below is needed to make the model get loaded without the resnet error
 
 
 # for calculating the accuracy
@@ -52,10 +43,6 @@ class ImageClassificationBase(nn.Module):
     def epoch_end(self, epoch, result):
         print("Epoch [{}], last_lr: {:.5f}, train_loss: {:.4f}, val_loss: {:.4f}, val_acc: {:.4f}".format(
             epoch, result['lrs'][-1], result['train_loss'], result['val_loss'], result['val_accuracy']))
-        
-
-
-# In[3]:
 
 
 # Architecture for training
@@ -68,6 +55,7 @@ def ConvBlock(in_channels, out_channels, pool=False):
     if pool:
         layers.append(nn.MaxPool2d(4))
     return nn.Sequential(*layers)
+
 class ResNet9(ImageClassificationBase):
     def __init__(self, in_channels, num_diseases):
         super().__init__()
@@ -97,11 +85,6 @@ class ResNet9(ImageClassificationBase):
 
 # good link to try and understand after getting evaluate function to work: https://androidkt.com/use-saved-pytorch-model-to-predict-single-and-multiple-images/
 
-# 
-
-# In[4]:
-
-
 #model executes if the above is exicuted.
 PATH = "./plant-disease-model-complete.pth"
 new_model = torch.load(PATH)
@@ -109,7 +92,7 @@ new_model.eval()
 #new_model.train()
 
 
-# In[5]:
+
 
 
 @torch.no_grad()
@@ -169,7 +152,7 @@ def fit_OneCycle(epochs, max_lr, model, train_loader, val_loader, weight_decay=0
 # Since there are randomly initialized weights, that is why accuracy come to near 0.019 (that is 1.9% chance of getting the right answer or you can say model randomly chooses a class).
 # Now, declare some hyper parameters for the training of the model. We can change it if result is not satisfactory.
 
-# In[6]:
+
 
 
 # getting summary of the model
@@ -180,7 +163,7 @@ weight_decay = 1e-4
 opt_func = torch.optim.Adam
 
 
-# In[7]:
+
 
 
 #path with images
@@ -191,7 +174,7 @@ testImageDir = os.listdir(valid_dir)
 print(testImageDir)
 
 
-# In[8]:
+
 
 
 # for moving data into GPU (if available)
@@ -226,20 +209,19 @@ class DeviceDataLoader():
         return len(self.dl)
 
 
-# In[9]:
 
 
 device = get_default_device()
 device
 
 
-# In[ ]:
+
 
 
 # This just lets us list all images 
 
 
-# In[10]:
+
 
 
 train = ImageFolder(train_dir, transform=transforms.ToTensor())
@@ -251,7 +233,7 @@ test_images = sorted(os.listdir(test_dir +'/test')) # since images in test folde
 
 # In the below code. I will resize the images so they are at 255 by 255 pixels. This will allow the CNN to be guaranteed to work properly.
 
-# In[11]:
+
 
 
 
@@ -273,7 +255,7 @@ resize()
 
 # Need to have method to create a class and test it against stored values
 
-# In[12]:
+
 
 
 def predict_image(testImageDir, new_model):
@@ -290,7 +272,7 @@ def predict_image(testImageDir, new_model):
     return train.classes[preds[0].item()]
 
 
-# In[13]:
+
 
 
 # getting all predictions (actual label vs predicted)
