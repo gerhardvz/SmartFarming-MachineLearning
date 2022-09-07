@@ -110,10 +110,10 @@ def to_device(data, device):
     return data.to(device, non_blocking=True)
 
 
-def get_prediction(image_bytes, new_model):
+def get_prediction(image_bytes):
     image = transform_image(image_bytes=image_bytes)
     image = image.to(device)
-    output = new_model.forward(image)
+    output = model.forward(image)
     #
     probs = torch.nn.functional.softmax(output, dim=1)
     # probs = new_model(image)
@@ -141,7 +141,7 @@ def test(image_path):
     with open(image_path, 'rb') as f:
         image_bytes = f.read()
         # testImageDir.unsqueeze(0)
-        conf, y_pre = get_prediction(image_bytes, model)
+        conf, y_pre = get_prediction(image_bytes)
         print(y_pre, ' at confidence score:{0:.2f}'.format(conf))
 
 
